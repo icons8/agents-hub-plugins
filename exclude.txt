@@ -1,0 +1,5 @@
+# a plugin the maintainers do not publish: opens a hole (puts a stranger's text into the hub input field)
+tolaysha/hub-plugin-send-to-hub
+
+# mcp-keeper: writes ~/.claude.json and hub.json outside the core; relies on core points that do not exist (owner decision 2026-10-28)
+Eugenius-S/hub-plugin-mcp-keeper

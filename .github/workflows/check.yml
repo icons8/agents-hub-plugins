@@ -1,0 +1,48 @@
+name: check
+
+# The catalog is checked by the same code the hub uses when it reads and installs it (the hub core):
+#  1. the file and its entries: `python3 -m core.marketplace validate --strict`
+#  2. every pinned entry against the code at its sha: manifest, version, rights, Plugin API, limits (tools/catalog.py)
+# A pull request is checked on what it changed; a push to main (and a manual run) checks everything.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.HUB_CORE_REPO }}     # the hub core: variable HUB_CORE_REPO (owner/repo)
+          token: ${{ secrets.HUB_CORE_TOKEN || github.token }}   # secret only while the core repo is private
+          path: core
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate the catalog file
+        working-directory: core
+        run: python3 -m core.marketplace validate "$GITHUB_WORKSPACE" --strict
+      - name: Check the pinned code
+        env:
+          HUB_CORE: ${{ github.workspace }}/core
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          since=()
+          if [ "$EVENT" = "pull_request" ]; then
+            git show "origin/$BASE_REF:hub-marketplace.json" > "$RUNNER_TEMP/base.json"
+            since=(--since "$RUNNER_TEMP/base.json")
+          fi
+          python3 tools/catalog.py verify "${since[@]}"
