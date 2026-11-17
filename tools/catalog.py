@@ -199,20 +199,20 @@ def add(args):
         print(f"{repo} is in {EXCLUDE}")
         return 1
     state = tempfile.mkdtemp(prefix="catalog-")
-    try:
+    try:   # the checkout stays until the entry is built: the icon is copied out of it
         sha = args.sha or head(repo)
         info = inspect(state, repo, sha)
-    except Skip as e:
-        print(f"{repo}: {e}")
+        data = load()
+        same = [p for p in data["plugins"] if p["name"] == info["man"]["name"]]
+        if same and same[0].get("source", {}).get("github") != repo:
+            print(f"the name «{info['man']['name']}» is taken by {same[0].get('source')}")
+            return 1
+        e = entry(ROOT, repo, sha, info, same[0] if same else None)
+    except Skip as err:
+        print(f"{repo}: {err}")
         return 1
     finally:
         shutil.rmtree(state, ignore_errors=True)
-    data = load()
-    same = [p for p in data["plugins"] if p["name"] == info["man"]["name"]]
-    if same and same[0].get("source", {}).get("github") != repo:
-        print(f"the name «{info['man']['name']}» is taken by {same[0].get('source')}")
-        return 1
-    e = entry(ROOT, repo, sha, info, same[0] if same else None)
     data["plugins"] = [p for p in data["plugins"] if p["name"] != e["name"]] + [e]
     write(data)
     print(f"{'updated' if same else 'added'} {e['name']} {e.get('version', '')} at {sha[:12]}; rights: {describe(e['rights'])}")
