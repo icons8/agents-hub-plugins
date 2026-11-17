@@ -3,3 +3,24 @@ tolaysha/hub-plugin-send-to-hub
 
 # mcp-keeper: writes ~/.claude.json and hub.json outside the core; relies on core points that do not exist (owner decision 2026-10-28)
 Eugenius-S/hub-plugin-mcp-keeper
+
+# changes: relies on GET /api/changes, which the core does not have; the panel cannot get its data on any hub
+libertyswift/hub-plugin-changes
+
+# tg-posts: sends telegram.post and waits for telegram.pressed/telegram.replied, events the core does not have
+Eugenius-S/hub-plugin-tg-posts
+
+# claude-update: the core runs its own tested copy of Claude Code; the plugin updates the claude found in PATH
+ManyLattice/hub-plugin-claude-update
+
+# sidebar-order: the core orders the session list by drag and drop itself and keeps the order for every device
+ManyLattice/hub-plugin-sidebar-order
+
+# projects-status: one author's own app pipeline (fixed stages stored as Russian text), not a general tool
+ManyLattice/hub-plugin-projects-status
+
+# week-recap: needs the author's private sync folder that the core does not have; can come back once it works on a plain core
+Eugenius-S/hub-plugin-week-recap
+
+# sidebar: the core folds the session list itself (hub.sidebar), and hide-sidebar does the same through it
+libertyswift/hub-plugin-sidebar
