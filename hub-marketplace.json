@@ -7,25 +7,6 @@
  },
  "plugins": [
   {
-   "name": "changes",
-   "type": "plugin",
-   "source": {
-    "github": "libertyswift/hub-plugin-changes",
-    "sha": "353b5302f62f700f1b5eec7deb212bc02ce91339"
-   },
-   "version": "1.0.0",
-   "description": "A \"Changes\" panel to the right of the session, as in Orca: what the agent changed in the code, by file and line; comments on lines go to the agent in one message",
-   "category": "feed",
-   "tags": [
-    "page"
-   ],
-   "author": "libertyswift",
-   "icon": "icons/changes.svg",
-   "rights": {
-    "page": true
-   }
-  },
-  {
    "name": "chat-images",
    "type": "plugin",
    "source": {
@@ -63,27 +44,6 @@
    "hubs": 2,
    "rights": {
     "page": true
-   }
-  },
-  {
-   "name": "claude-update",
-   "type": "plugin",
-   "source": {
-    "github": "ManyLattice/hub-plugin-claude-update",
-    "sha": "8aca1957d6794f7769cedc6b1362487d0f89907b"
-   },
-   "version": "1.0.0",
-   "description": "Update Claude Code with a button: \"Settings\" → \"Claude Code\" shows the installed and the available version, updates claude the way it was installed (installer, npm, Homebrew) and asks the hub to restart once the sessions are free",
-   "category": "tools",
-   "tags": [
-    "page",
-    "process"
-   ],
-   "author": "ManyLattice",
-   "icon": "icons/claude-update.svg",
-   "rights": {
-    "page": true,
-    "process": "python3 main.py"
    }
   },
   {
@@ -132,7 +92,7 @@
     "sha": "ce5c4aad063effe21d21ddbc814a960252566a7e"
    },
    "version": "1.14.4",
-   "description": "Every session in the list has its own icon, picked in the session chat with the button to the left of the title: an emoji is the session icon in the hub, seen everywhere (Telegram, other devices). The style (emoji or outline symbols) and color are changed in Settings → Look → Icons, and the icon of ",
+   "description": "A personal icon for every chat in the list: pick it with the button left of the title. By default an outline icon in the style and color of your theme; an emoji icon shows everywhere, in Telegram too. The icon of a chat with an unread result hops. Clean theme: monster avatars for specialists.",
    "category": "sessions",
    "tags": [
     "page"
@@ -189,10 +149,10 @@
    "type": "plugin",
    "source": {
     "github": "Eugenius-S/hub-plugin-hide-sidebar",
-    "sha": "2ec0a12220fb58aef3e2f3c52b5acade8714f221"
+    "sha": "b988a5d7caa6be9869af29478794087ed967a185"
    },
-   "version": "1.4.0",
-   "description": "A button with a panel icon hides and restores the hub sidebar, like in Claude. The button sits in the sidebar header: on top it, the avatar and the ☰ menu, below the search at full width; while the sidebar is hidden, it sits at the left edge of the page. The sidebar smoothly slides out and in (with ",
+   "version": "1.5.0",
+   "description": "A button with a panel icon folds and restores the hub's sidebar, like in Claude. It sits in the sidebar header; while the sidebar is folded, at the left edge of the page. The panel slides out and in smoothly; the fold is the hub's own, the same as the divider's handle.",
    "category": "look",
    "tags": [
     "page"
@@ -272,9 +232,9 @@
    "type": "plugin",
    "source": {
     "github": "GreatMedivack/hub-plugin-jira-board",
-    "sha": "5376a9878c12bf4d4b575b423917e9abca9d66ec"
+    "sha": "ec21c50d2acb0a80e54366681ca025831df47da6"
    },
-   "version": "1.0.2",
+   "version": "1.1.0",
    "description": "Jira tasks in the hub: what the agents are working on and what is done, the status in Jira, who works on it, a jump to the right session. Statuses come through the Atlassian MCP already connected to the hub",
    "category": "work",
    "tags": [
@@ -413,28 +373,6 @@
    }
   },
   {
-   "name": "projects-status",
-   "type": "plugin",
-   "source": {
-    "github": "ManyLattice/hub-plugin-projects-status",
-    "sha": "fd0a0318f26f114452fbac767af2c7fdf34aa91e"
-   },
-   "version": "0.10.2",
-   "description": "\"Projects status\": a board of apps by stage (Candidate → Development → To release → In the store); every project from hub projects: what waits for your answer, what is going, what is done; a project's card is its memory; a Jira view with who in the hub leads each task",
-   "category": "work",
-   "tags": [
-    "page",
-    "process"
-   ],
-   "author": "ManyLattice",
-   "icon": "icons/projects-status.png",
-   "hubs": 1,
-   "rights": {
-    "page": true,
-    "process": "python3 main.py"
-   }
-  },
-  {
    "name": "quiet-unread",
    "type": "plugin",
    "source": {
@@ -442,7 +380,7 @@
     "sha": "7ede5cbd8e7f416d13225939569b8f849506b325"
    },
    "version": "0.3.1",
-   "description": "\"New\" on a session (the blue dot and the \"New\" section in the \"Now\" tab) only when the result is addressed to you: a reply to your message, to your task, or the continuation of such a turn. The hub's results always count; in the settings, tick who else lights up on any result (specialists, executors",
+   "description": "Lights up \"New\" only for results meant for you: a reply to your message or your task, or the continuation of one. The blue dot and the \"New\" section in the \"Now\" tab stay quiet for service messages. The hub always counts; in the settings tick who else lights up on any result.",
    "category": "sessions",
    "tags": [
     "page"
@@ -537,45 +475,6 @@
    }
   },
   {
-   "name": "sidebar",
-   "type": "plugin",
-   "source": {
-    "github": "libertyswift/hub-plugin-sidebar",
-    "sha": "287a1f3042f1cbb9652a0585459000cd19a0d939"
-   },
-   "version": "1.0.0",
-   "description": "The list of sessions on the left hides behind a button in the header and slides out when you hover over it, as in Jira",
-   "category": "look",
-   "tags": [
-    "page"
-   ],
-   "author": "libertyswift",
-   "icon": "icons/sidebar.svg",
-   "rights": {
-    "page": true
-   }
-  },
-  {
-   "name": "sidebar-order",
-   "type": "plugin",
-   "source": {
-    "github": "ManyLattice/hub-plugin-sidebar-order",
-    "sha": "c9bffd6fd40ab15cc14aacc29254620ee056bfd3"
-   },
-   "version": "1.0.0",
-   "description": "Your own order in the list of sessions: drag a row with the mouse within its group (specialists, directions, executors, asleep, an agent's forks). The browser remembers the order; reset it in \"Settings\" → \"Order in the list\"",
-   "category": "sessions",
-   "tags": [
-    "page"
-   ],
-   "author": "ManyLattice",
-   "icon": "icons/sidebar-order.png",
-   "hubs": 1,
-   "rights": {
-    "page": true
-   }
-  },
-  {
    "name": "sounds",
    "type": "plugin",
    "source": {
@@ -640,35 +539,13 @@
    }
   },
   {
-   "name": "tg-posts",
-   "type": "plugin",
-   "source": {
-    "github": "Eugenius-S/hub-plugin-tg-posts",
-    "sha": "a6d4c14620a74ce0df545b52edd99f52236d54be"
-   },
-   "version": "0.14.1",
-   "description": "Posts to the owner in Telegram one at a time: a queue, one unreviewed post hangs in Telegram, the next one comes after a ❤️ or 👎 or a reply; a reply is a revision (it goes to the session, the next post goes out at once, the new version stands first in the queue); deck cards work the same way: a repl",
-   "category": "notify",
-   "tags": [
-    "process",
-    "skills"
-   ],
-   "author": "Eugenius-S",
-   "icon": "icons/tg-posts.png",
-   "hubs": 2,
-   "rights": {
-    "process": "python3 main.py",
-    "skills": true
-   }
-  },
-  {
    "name": "unix-terminal",
    "type": "plugin",
    "source": {
     "github": "GreatMedivack/hub-plugin-unix-terminal",
-    "sha": "b66c158d0b73137c3fa9448a04472b9c3daa0456"
+    "sha": "81a226615814b0384adf5b5ed3da3aa930cf9db3"
    },
-   "version": "1.15.0",
+   "version": "1.18.3",
    "description": "Hub themes in the spirit of the unix terminals of the 70s and 80s: a calm phosphor and a calm amber, the Terminus font on the whole page, ASCII avatars of the agents (Terminus signs for the common session emoji)",
    "category": "look",
    "tags": [
@@ -688,10 +565,10 @@
    "type": "plugin",
    "source": {
     "github": "Eugenius-S/hub-plugin-video-feedback",
-    "sha": "65aeea9a378c9b9719d08c8a862c7b2e3583d09b"
+    "sha": "45fb52f72593bf6d5375f8fa3849f38b630df2ab"
    },
-   "version": "0.9.18",
-   "description": "Give the hub video feedback: press the camera next to the microphone and, 3 seconds later, the screen and your voice start recording. When you stop, the hub turns the speech and key frames into feedback by points, and the video itself lands as a file alongside. It spends more tokens than text, so sw",
+   "version": "0.9.22",
+   "description": "Show and tell instead of writing: press the camera next to the microphone and the screen and your voice start recording 3 seconds later. Draw on the screen with a pen, tag a Motion Gallery animation at a frame. The hub turns it into feedback by points. Costs more tokens than text.",
    "category": "feed",
    "tags": [
     "page"
@@ -701,28 +578,6 @@
    "hubs": 2,
    "rights": {
     "page": true
-   }
-  },
-  {
-   "name": "week-recap",
-   "type": "plugin",
-   "source": {
-    "github": "Eugenius-S/hub-plugin-week-recap",
-    "sha": "5736849916a6f8e6912ac3a97145a765003068bc"
-   },
-   "version": "2.7.0",
-   "description": "Week: every Monday (at 9:00 or at the first start of the hub - changed in the tab) a recap of last week for you, from all your computers at once: first the insights about working with the hub (what you may not know, what quietly broke, what to improve in how you set tasks), then what was done by the",
-   "category": "work",
-   "tags": [
-    "page",
-    "process"
-   ],
-   "author": "Eugenius-S",
-   "icon": "icons/week-recap.png",
-   "hubs": 2,
-   "rights": {
-    "page": true,
-    "process": "python3 main.py"
    }
   },
   {
