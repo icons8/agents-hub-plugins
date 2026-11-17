@@ -129,9 +129,9 @@
    "type": "plugin",
    "source": {
     "github": "Eugenius-S/hub-plugin-direction-icons",
-    "sha": "8cce7f3fb7db7bb10bac289cbe0a5b02909b7e1e"
+    "sha": "ce5c4aad063effe21d21ddbc814a960252566a7e"
    },
-   "version": "1.14.2",
+   "version": "1.14.4",
    "description": "Every session in the list has its own icon, picked in the session chat with the button to the left of the title: an emoji is the session icon in the hub, seen everywhere (Telegram, other devices). The style (emoji or outline symbols) and color are changed in Settings → Look → Icons, and the icon of ",
    "category": "sessions",
    "tags": [
