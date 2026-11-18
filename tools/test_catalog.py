@@ -173,7 +173,7 @@ class SyncTest(unittest.TestCase):
         self.assertIn(f"compare/{self.pin[:12]}...{new[:12]}", out)
 
     def test_new_text_that_is_not_english_stops_until_it_is_translated(self):
-        self.commit(self.author, {"extra.js": 'const t = "Привет";\n'}, "a new string")
+        self.commit(self.author, {"extra.js": 'const t = "Γεια";\n'}, "a new string")
         code, out = self.sync()
         self.assertEqual(code, catalog.STOPPED, out)
         self.assertIn("extra.js", out)
@@ -197,7 +197,7 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(self.entry()["rights"], {"page": True, "process": "python3 main.py"})
 
     def test_a_conflict_with_our_translation_stops_and_resumes_after_the_merge(self):
-        self.commit(self.author, {"main.js": "// карты\n"}, "the author edits the same line")
+        self.commit(self.author, {"main.js": "// χάρτες\n"}, "the author edits the same line")
         code, out = self.sync()
         self.assertEqual(code, catalog.STOPPED, out)
         self.assertIn("conflict in main.js", out)
@@ -211,7 +211,7 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(self.entry()["upstream"]["sha"], git(self.author, "rev-parse", "HEAD"))
 
     def test_after_a_conflict_the_resume_still_checks_the_new_text(self):
-        self.commit(self.author, {"main.js": "// карты\n", "extra.js": 'const t = "Привет";\n'}, "both")
+        self.commit(self.author, {"main.js": "// χάρτες\n", "extra.js": 'const t = "Γεια";\n'}, "both")
         self.assertEqual(self.sync()[0], catalog.STOPPED)
         clone = os.path.join(self.clones, "maps")
         with open(os.path.join(clone, "main.js"), "w") as f:
@@ -224,7 +224,7 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(self.copy_head(), self.head)
 
     def test_a_new_sync_does_not_wipe_a_clone_a_person_is_working_in(self):
-        self.commit(self.author, {"extra.js": 'const t = "Привет";\n'}, "a new string")
+        self.commit(self.author, {"extra.js": 'const t = "Γεια";\n'}, "a new string")
         self.sync()
         clone = os.path.join(self.clones, "maps")
         self.commit(clone, {"extra.js": 'const t = "Hello";\n'}, "translated")
