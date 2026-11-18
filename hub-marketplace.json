@@ -252,9 +252,9 @@
    "type": "plugin",
    "source": {
     "github": "icons8/hub-plugin-ios-themes",
-    "sha": "808436aa1714ea8ebedb6d33b45f62b8513cd7ab"
+    "sha": "9b04949c6dbc235a3f6edc2cbfd9a8775862b79b"
    },
-   "version": "1.0.0",
+   "version": "1.1.1",
    "description": "Hub themes for an iOS developer: Liquid Glass, light, glass over a wallpaper in the spirit of iOS 26; Blueprint, a dark Interface Builder blueprint with an orange accent. Icons8 icons and avatars in the iOS style",
    "category": "look",
    "tags": [
@@ -263,11 +263,12 @@
    "author": "ManyLattice",
    "upstream": {
     "github": "ManyLattice/hub-plugin-ios-themes",
-    "sha": "e96c144b584200c4c2ef4e491bbea5d5580b2bd1"
+    "sha": "ebc8240756f8ce4b858e11b17db2878772fbdc91"
    },
    "icon": "icons/ios-themes.png",
    "hubs": 4,
    "rights": {
+    "page": true,
     "themes": true
    }
   },
