@@ -24,6 +24,11 @@
 
 ## What happens next
 
+- **The catalog keeps a copy of your plugin** under icons8 (`icons8/hub-plugin-<name>`), with the text in English by
+  default, and installs that copy. You stay the author: in the entry, in [CONTRIBUTORS.md](CONTRIBUTORS.md) and at the
+  top of the copy's README. Your later commits are taken into the copy by the maintainers; you keep working in your
+  repo as before.
+
 - **A new plugin is accepted only with the owner's word.** Open the pull request and say what the plugin is for;
   the maintainers read all of the code (what the page does, where it goes on the network, which files it reads and
   writes, what processes it starts) and ask the owner.
