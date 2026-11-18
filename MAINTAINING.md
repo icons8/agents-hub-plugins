@@ -40,11 +40,15 @@ look, with the clone kept in the folder it prints:
 - new text that is not English: translate it in the clone (a translation the plugin keeps on purpose stays), commit,
   `sync <name> --resume`;
 - new rights (`plugrights` of the copy before and after differ): the owner's word first; with it,
-  `sync <name> --resume --accept` and the pull request says so.
+  `sync <name> --resume --accept` (only for that one plugin) and the pull request says so;
+- a Plugin API newer than the core's: wait for the core release.
+
+A clone `sync` stopped in is never wiped by the next run: `--resume`, or remove the folder to start over.
 
 Otherwise it pushes the merged copy (never with force) and moves the entry (`source.sha`, `upstream.sha`, version,
-rights). Read the author's diff it prints, run `verify`, send the change as a pull request. `sync` needs a git identity
-that may push to the copies.
+rights) with CONTRIBUTORS.md. Read the author's diff it prints, run `verify`, send the change as a pull request. `sync`
+needs a git identity that may push to the copies. While the copies are private, `verify` is run locally: the token of
+this repo's CI does not see other private repos.
 
 A new plugin: copy the author's repo into a private `icons8/hub-plugin-<name>` (a mirror of its default branch, not a
 GitHub fork: a fork of a public repo is public), add our commits, then

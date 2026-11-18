@@ -165,7 +165,8 @@ def entry(folder, repo, sha, info, old=None):
 def owner(e, repo=None):
     """The author of an entry: the owner of the upstream repo for a copy the catalog keeps, else of its own repo."""
     up = e.get("upstream") if isinstance(e.get("upstream"), dict) else {}
-    return str(up.get("github") or repo or (e.get("source") or {}).get("github") or "").split("/")[0]
+    src = e.get("source") if isinstance(e.get("source"), dict) else {}
+    return str(up.get("github") or repo or src.get("github") or "").split("/")[0]
 
 
 def init(args):
@@ -250,6 +251,7 @@ def add(args):
         shutil.rmtree(state, ignore_errors=True)
     data["plugins"] = [p for p in data["plugins"] if p["name"] != e["name"]] + [e]
     write(data)
+    write_credits(data)
     print(f"{'updated' if same else 'added'} {e['name']} {e.get('version', '')} at {sha[:12]}; rights: {describe(e['rights'])}"
           + (f"; a copy of {e['upstream']['github']} at {e['upstream']['sha'][:12]}" if e.get("upstream") else ""))
     for miss in info["man"]["missing"]:
@@ -323,6 +325,10 @@ def upstream_wrong(src, up, skip=()):
     if up["github"] in skip:
         return f"the upstream repo is in {EXCLUDE}"
     try:
+        gh(f"repos/{up['github']}/commits/{up['sha']}", "--jq", ".sha")
+    except Skip as e:
+        return f"upstream {up['sha'][:12]} is not a commit of {up['github']}: {e}"
+    try:
         status = gh(f"repos/{src['github']}/compare/{up['sha']}...{src['sha']}", "--jq", ".status").strip()
     except Skip as e:
         return f"upstream {up['sha'][:12]} is not in the copy: {e}"
@@ -336,13 +342,14 @@ def git_url(repo):
     return f"https://github.com/{repo}.git"
 
 
-def git(cwd, *args, check=True):
+def git(cwd, *args, check=True, code=False):
+    """git's output (code - (exit code, output)); a failure with check - Skip."""
     r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, encoding="utf-8", errors="replace",
                        env={**os.environ, "GIT_TERMINAL_PROMPT": "0"})
     if check and r.returncode:
         tail = (r.stderr or r.stdout).strip().splitlines()
         raise Skip(f"git {args[0]}: {tail[-1][:200] if tail else 'failed'}")
-    return r.stdout.strip()
+    return (r.returncode, r.stdout.strip()) if code else r.stdout.strip()
 
 
 def ancestor(cwd, a, b):
@@ -376,14 +383,24 @@ def foreign(line):
 
 
 def new_text(clone, base, rev, limit=60):
-    """[(file, line)] of lines added between base and rev that are not English yet."""
-    out, path = [], None
-    for line in git(clone, "diff", "--unified=0", "--no-color", "--no-ext-diff", base, rev).splitlines():
-        if line.startswith("+++ "):
-            path = line[6:] if line.startswith("+++ b/") else None
-        elif line.startswith("+") and path and foreign(line[1:]):
-            out.append((path, line[1:].strip()[:160]))
+    """[(file, line)] of lines added between base and rev that are not English yet (file by file: a line of the text
+    is never taken for a header)."""
+    out = []
+    names = git(clone, "diff", "--name-only", "-z", "--diff-filter=AM", base, rev).split("\0")
+    for path in filter(None, names):
+        body = False
+        for line in git(clone, "diff", "--unified=0", "--no-color", "--no-ext-diff", base, rev, "--", path).splitlines():
+            if line.startswith("@@"):
+                body = True
+            elif body and line.startswith("+") and foreign(line[1:]):
+                out.append((path, line[1:].strip()[:160]))
     return out[:limit]
+
+
+def stopped(note, st, why):
+    """Where sync stopped, in the clone: --resume skips the text check only after a stop for the text."""
+    with open(note, "w", encoding="utf-8") as f:
+        json.dump({**st, "stopped": why}, f)
 
 
 def sync_one(data, e, work, resume=False, accept=False):
@@ -410,6 +427,9 @@ def sync_one(data, e, work, resume=False, accept=False):
             if not ancestor(folder, st["upstream"], "HEAD"):
                 raise Stop(f"{folder}: HEAD does not hold the author's {st['upstream'][:12]}: finish the merge")
         else:
+            if os.path.exists(note):
+                raise Stop(f"an earlier sync stopped in {folder}: `tools/catalog.py sync {name} --resume`, or remove the "
+                           f"folder to start over")
             shutil.rmtree(folder, ignore_errors=True)
             os.makedirs(work, exist_ok=True)
             git(work, "clone", "--quiet", git_url(copy), folder)
@@ -426,26 +446,30 @@ def sync_one(data, e, work, resume=False, accept=False):
             if not ancestor(folder, up["sha"], new):
                 raise Stop(f"{up['github']} no longer holds {up['sha'][:12]} (history rewritten): read it by hand")
             st = {"base": base, "upstream": new, "branch": branch}
-            with open(note, "w", encoding="utf-8") as f:
-                json.dump(st, f)
-            merged = subprocess.run(["git", "merge", "--no-ff", "--no-edit", "-m",
-                                     f"Merge {up['github']} at {new[:12]}: the author's updates", "FETCH_HEAD"],
-                                    cwd=folder, capture_output=True, text=True)
-            if merged.returncode:
+            stopped(note, st, "")
+            failed, _ = git(folder, "merge", "--no-ff", "--no-edit", "-m",
+                            f"Merge {up['github']} at {new[:12]}: the author's updates", "FETCH_HEAD", check=False, code=True)
+            if failed:
                 files = git(folder, "diff", "--name-only", "--diff-filter=U", check=False).split()
+                stopped(note, st, "conflict")
                 raise Stop(f"conflict in {', '.join(files) or 'the merge'}: resolve it in {folder}, commit, "
                            f"then `tools/catalog.py sync {name} --resume`")
         old, now = at(folder, base, tmp), at(folder, "HEAD", tmp)
+        api, why = version.compat(now["man"]["hub"])
+        if api in ("incompatible", "newer"):
+            raise Stop(f"needs another Plugin API ({now['man']['hub']}; the core has {version.PLUGIN_API}): {why}")
         wider = plugrights.wider(now["pairs"], old["pairs"])
         if wider and accept:
             print(f"  {name}: new rights the owner allowed: {'; '.join(plugrights.shown(w) for w in wider)}")
         elif wider:
+            stopped(note, st, "rights")
             raise Stop(f"asks for new rights: {'; '.join(plugrights.shown(w) for w in wider)} - the owner's word first, "
                        f"nothing is pushed; with it: `tools/catalog.py sync {name} --resume --accept` (the clone: {folder})")
         if now["man"]["name"] != name:
             raise Stop(f"the manifest is named «{now['man']['name']}» now")
-        text = [] if resume else new_text(folder, base, "HEAD")
+        text = [] if resume and st.get("stopped") == "text" else new_text(folder, base, "HEAD")
         if text:
+            stopped(note, st, "text")
             shown = "\n".join(f"    {p}: {t}" for p, t in text)
             raise Stop(f"new text that is not English yet:\n{shown}\n  translate it in {folder} (a translation the "
                        f"plugin keeps on purpose stays), commit, then `tools/catalog.py sync {name} --resume`")
@@ -474,11 +498,15 @@ def sync(args):
     if unknown or not picked:
         print(f"not a copy the catalog keeps: {', '.join(unknown) or '(nothing given)'}")
         return 2
+    if args.accept and (args.all or not args.resume or len(picked) != 1):
+        print("--accept: only with --resume and one name, after sync stopped on that plugin's new rights")
+        return 2
     code = 0
     for e in picked:
         try:
             print(sync_one(data, e, args.work, args.resume, args.accept))
             write(data)
+            write_credits(data)
         except Stop as why:
             print(f"STOPPED {e['name']}: {why}")
             code = max(code, STOPPED)
@@ -501,7 +529,8 @@ def _read(name, folder=ROOT):
 def _by_author(data):
     out = {}
     for p in data["plugins"]:
-        if p.get("type", "plugin") == "plugin" and owner(p):
+        if p.get("type", "plugin") == "plugin" and owner(p) and (
+                isinstance(p.get("upstream"), dict) or isinstance(p.get("source"), dict) and p["source"].get("github")):
             out.setdefault(owner(p), []).append(p)
     return dict(sorted(out.items(), key=lambda kv: kv[0].lower()))
 
@@ -516,7 +545,7 @@ def credits(data):
         lines.append(f"## [@{login}](https://github.com/{login})")
         lines.append("")
         for p in sorted(plugins, key=lambda p: p["name"]):
-            up = (p.get("upstream") or {}).get("github") or p["source"]["github"]
+            up = (p.get("upstream") if isinstance(p.get("upstream"), dict) else {}).get("github") or p["source"]["github"]
             lines.append(f"- **{p['name']}** — original repo [{up}](https://github.com/{up})")
         lines.append("")
     return "\n".join(lines)
@@ -528,17 +557,25 @@ def authors_block(data):
     return f"{AUTHORS[0]}\n{names}\n{AUTHORS[1]}"
 
 
-def contributors(args):
-    data = load()
-    with open(os.path.join(ROOT, CONTRIBUTORS), "w", encoding="utf-8") as f:
+def write_credits(data, folder=None):
+    """CONTRIBUTORS.md and the authors block of README.md from the catalog -> False when README has no block."""
+    folder = folder or ROOT
+    with open(os.path.join(folder, CONTRIBUTORS), "w", encoding="utf-8") as f:
         f.write(credits(data))
-    text = _read(README)
+    text = _read(README, folder)
     start, end = text.find(AUTHORS[0]), text.find(AUTHORS[1])
     if start < 0 or end < start:
+        return False
+    with open(os.path.join(folder, README), "w", encoding="utf-8") as f:
+        f.write(text[:start] + authors_block(data) + text[end + len(AUTHORS[1]):])
+    return True
+
+
+def contributors(args):
+    data = load()
+    if not write_credits(data):
         print(f"{README} has no {AUTHORS[0]} … {AUTHORS[1]} block: put it where the authors are listed")
         return 1
-    with open(os.path.join(ROOT, README), "w", encoding="utf-8") as f:
-        f.write(text[:start] + authors_block(data) + text[end + len(AUTHORS[1]):])
     print(f"{CONTRIBUTORS} and {README}: {len(_by_author(data))} authors")
     return 0
 

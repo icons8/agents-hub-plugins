@@ -210,6 +210,33 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertEqual(self.entry()["upstream"]["sha"], git(self.author, "rev-parse", "HEAD"))
 
+    def test_after_a_conflict_the_resume_still_checks_the_new_text(self):
+        self.commit(self.author, {"main.js": "// карты\n", "extra.js": 'const t = "Привет";\n'}, "both")
+        self.assertEqual(self.sync()[0], catalog.STOPPED)
+        clone = os.path.join(self.clones, "maps")
+        with open(os.path.join(clone, "main.js"), "w") as f:
+            f.write("// maps, in English\n")
+        git(clone, "add", "main.js")
+        git(clone, "commit", "-q", "--no-edit")
+        code, out = self.sync("--resume")
+        self.assertEqual(code, catalog.STOPPED, out)
+        self.assertIn("extra.js", out)
+        self.assertEqual(self.copy_head(), self.head)
+
+    def test_a_new_sync_does_not_wipe_a_clone_a_person_is_working_in(self):
+        self.commit(self.author, {"extra.js": 'const t = "Привет";\n'}, "a new string")
+        self.sync()
+        clone = os.path.join(self.clones, "maps")
+        self.commit(clone, {"extra.js": 'const t = "Hello";\n'}, "translated")
+        code, out = self.sync()
+        self.assertEqual(code, catalog.STOPPED, out)
+        self.assertIn("--resume", out)
+        self.assertEqual(git(clone, "show", "HEAD:extra.js"), 'const t = "Hello";')
+
+    def test_accept_is_only_for_one_plugin_that_stopped(self):
+        code, out = self.sync("--accept")
+        self.assertEqual(code, 2, out)
+
     def test_a_copy_moved_outside_the_catalog_is_not_synced(self):
         work = os.path.join(self.dir, "w")
         self.commit(work, {"main.js": "// someone pushed\n"}, "by hand")
@@ -223,7 +250,8 @@ class ContributorsTest(unittest.TestCase):
     def test_authors_come_from_upstream_and_from_plain_entries(self):
         data = {"plugins": [
             {"name": "maps", "source": {"github": "icons8/hub-plugin-maps"}, "upstream": {"github": "acme/hub-plugin-maps"}},
-            {"name": "owl", "source": {"github": "bob/hub-plugin-owl"}}]}
+            {"name": "owl", "source": {"github": "bob/hub-plugin-owl"}},
+            {"name": "local", "source": "./plugins/local"}, {"name": "far", "source": {"git": "https://example.com/x.git"}}]}
         text = catalog.credits(data)
         self.assertIn("## [@acme](https://github.com/acme)\n\n- **maps** — original repo [acme/hub-plugin-maps]", text)
         self.assertIn("**owl** — original repo [bob/hub-plugin-owl]", text)
