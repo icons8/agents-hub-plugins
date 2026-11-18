@@ -449,9 +449,9 @@
    "type": "plugin",
    "source": {
     "github": "icons8/hub-plugin-quiet-unread",
-    "sha": "a6a58c0c66cd5460c83156be6c82ee9f5bd865b6"
+    "sha": "a411c1e981ba6f425ed3fc92ad0e1e690fae3cdd"
    },
-   "version": "0.3.1",
+   "version": "0.4.0",
    "description": "Lights up \"New\" only for results meant for you: a reply to your message or your task, or the continuation of one. The blue dot and the \"New\" section in the \"Now\" tab stay quiet for service messages. The hub always counts; in the settings tick who else lights up on any result.",
    "category": "sessions",
    "tags": [
@@ -460,7 +460,7 @@
    "author": "Eugenius-S",
    "upstream": {
     "github": "Eugenius-S/hub-plugin-quiet-unread",
-    "sha": "7ede5cbd8e7f416d13225939569b8f849506b325"
+    "sha": "6bc07791da9cf984b4c6628f5ff4b7f11b471b3e"
    },
    "icon": "icons/quiet-unread.png",
    "hubs": 3,
