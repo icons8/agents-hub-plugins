@@ -10,8 +10,8 @@
    "name": "chat-images",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-chat-images",
-    "sha": "955a8f3c32c178ebf96c1831438df1fdfcd4b85c"
+    "github": "icons8/hub-plugin-chat-images",
+    "sha": "afda70d3c6c99c7bf09a8ed2e224d30992832975"
    },
    "version": "0.3.2",
    "description": "Images from the agent show right in the chat: big ones at full size, several in a row as small previews. A click opens the image full screen: page with the arrows, zoom with a click, drag with the mouse",
@@ -20,6 +20,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-chat-images",
+    "sha": "955a8f3c32c178ebf96c1831438df1fdfcd4b85c"
+   },
    "icon": "icons/chat-images.png",
    "hubs": 3,
    "rights": {
@@ -30,8 +34,8 @@
    "name": "choice-images",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-choice-images",
-    "sha": "e3cd7ed9c5555bc7f13347180a45ffa4e1ec139f"
+    "github": "icons8/hub-plugin-choice-images",
+    "sha": "a17def0a538c7e2d431a53dca43804fdac8bb19e"
    },
    "version": "0.3.2",
    "description": "When a question asks to pick an image, it shows right in the answer option; many images come as a grid with checkboxes, tick as many as you like. A click opens it large, with zoom",
@@ -40,6 +44,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-choice-images",
+    "sha": "e3cd7ed9c5555bc7f13347180a45ffa4e1ec139f"
+   },
    "icon": "icons/choice-images.png",
    "hubs": 2,
    "rights": {
@@ -50,8 +58,8 @@
    "name": "copy-on-select",
    "type": "plugin",
    "source": {
-    "github": "tolaysha/hub-plugin-copy-on-select",
-    "sha": "a5b045339bb831083a021ad03323c4e5395c6453"
+    "github": "icons8/hub-plugin-copy-on-select",
+    "sha": "bfee21c1b8f58676ac9c0d8d57a3810977443cd2"
    },
    "version": "1.0.0",
    "description": "Select text in the feed with the mouse and it is already on the clipboard: no Cmd/Ctrl+C needed",
@@ -60,6 +68,10 @@
     "page"
    ],
    "author": "tolaysha",
+   "upstream": {
+    "github": "tolaysha/hub-plugin-copy-on-select",
+    "sha": "a5b045339bb831083a021ad03323c4e5395c6453"
+   },
    "hubs": 4,
    "rights": {
     "page": true
@@ -69,8 +81,8 @@
    "name": "dark-optimized",
    "type": "plugin",
    "source": {
-    "github": "Scremliss/hub-plugin-dark-optimized",
-    "sha": "f705f8696e196551fecf95198ff3c2aee4afe433"
+    "github": "icons8/hub-plugin-dark-optimized",
+    "sha": "ff5ea8da041a9e9db0bf4d3425cf59c56623f439"
    },
    "version": "1.0.0",
    "description": "The \"Dark+ Optimized\" theme: a neutral dark gray background (#363636) and light text, as in Cursor",
@@ -79,6 +91,10 @@
     "themes"
    ],
    "author": "Scremliss",
+   "upstream": {
+    "github": "Scremliss/hub-plugin-dark-optimized",
+    "sha": "f705f8696e196551fecf95198ff3c2aee4afe433"
+   },
    "icon": "icons/dark-optimized.svg",
    "rights": {
     "themes": true
@@ -88,8 +104,8 @@
    "name": "direction-icons",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-direction-icons",
-    "sha": "ce5c4aad063effe21d21ddbc814a960252566a7e"
+    "github": "icons8/hub-plugin-direction-icons",
+    "sha": "97e16d8dd38f5790d24627133af6f776057d45c9"
    },
    "version": "1.14.4",
    "description": "A personal icon for every chat in the list: pick it with the button left of the title. By default an outline icon in the style and color of your theme; an emoji icon shows everywhere, in Telegram too. The icon of a chat with an unread result hops. Clean theme: monster avatars for specialists.",
@@ -98,6 +114,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-direction-icons",
+    "sha": "ce5c4aad063effe21d21ddbc814a960252566a7e"
+   },
    "icon": "icons/direction-icons.png",
    "hubs": 2,
    "rights": {
@@ -108,8 +128,8 @@
    "name": "gpt-image",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-gpt-image",
-    "sha": "fdaf5eb216bf4f2e9266057993b641df9f49d36c"
+    "github": "icons8/hub-plugin-gpt-image",
+    "sha": "4c887a3a8a897be04ce1413cf531e1c05b60b2d4"
    },
    "version": "1.9.1",
    "description": "Sessions draw pictures on your ChatGPT subscription, no API key and no extra payment: from a description and up to 16 references, the result lands straight in the project folder. Descriptions and references go to OpenAI",
@@ -118,6 +138,10 @@
     "skills"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-gpt-image",
+    "sha": "fdaf5eb216bf4f2e9266057993b641df9f49d36c"
+   },
    "icon": "icons/gpt-image.png",
    "hubs": 2,
    "rights": {
@@ -128,8 +152,8 @@
    "name": "granola-meetings",
    "type": "plugin",
    "source": {
-    "github": "summers-julia/hub-plugin-granola-meetings",
-    "sha": "3baa35b50a2573ac2d73d66383a94a06b68c5844"
+    "github": "icons8/hub-plugin-granola-meetings",
+    "sha": "2057c451c85598c6e0247a00e8c180c1edffc38f"
    },
    "version": "0.1.0",
    "description": "Meetings agent for Granola: weekly pulls meeting notes into an archive on disk, answers what was decided and who promised what, preps you for calls and hands agreements to the sessions that own the topic",
@@ -138,6 +162,10 @@
     "skills"
    ],
    "author": "summers-julia",
+   "upstream": {
+    "github": "summers-julia/hub-plugin-granola-meetings",
+    "sha": "3baa35b50a2573ac2d73d66383a94a06b68c5844"
+   },
    "icon": "icons/granola-meetings.svg",
    "hubs": 4,
    "rights": {
@@ -148,8 +176,8 @@
    "name": "hide-sidebar",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-hide-sidebar",
-    "sha": "b988a5d7caa6be9869af29478794087ed967a185"
+    "github": "icons8/hub-plugin-hide-sidebar",
+    "sha": "062555e4035095e707136ea59bfc32c00d7676a2"
    },
    "version": "1.5.0",
    "description": "A button with a panel icon folds and restores the hub's sidebar, like in Claude. It sits in the sidebar header; while the sidebar is folded, at the left edge of the page. The panel slides out and in smoothly; the fold is the hub's own, the same as the divider's handle.",
@@ -158,6 +186,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-hide-sidebar",
+    "sha": "b988a5d7caa6be9869af29478794087ed967a185"
+   },
    "icon": "icons/hide-sidebar.png",
    "hubs": 2,
    "rights": {
@@ -168,8 +200,8 @@
    "name": "hub-design",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-hub-design",
-    "sha": "bed3ce6b2aff2e4c5bfc255758f1b4cac78ba0cf"
+    "github": "icons8/hub-plugin-hub-design",
+    "sha": "4f912a805571a92c9b60c8e2ea295da1d1b54bf8"
    },
    "version": "0.46.1",
    "description": "A design canvas inside the hub. Point at an element or an area and comment: the designer gets precise edits. Hand edits, tweaks, PDF export, and a start screen with every design you ever made.",
@@ -179,6 +211,10 @@
     "process"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-hub-design",
+    "sha": "bed3ce6b2aff2e4c5bfc255758f1b4cac78ba0cf"
+   },
    "icon": "icons/hub-design.png",
    "hubs": 2,
    "rights": {
@@ -190,10 +226,10 @@
    "name": "hyperspace",
    "type": "plugin",
    "source": {
-    "github": "libertyswift/hub-plugin-hyperspace",
-    "sha": "116947bd43fdcde8ef3ec166bc8ebbb63404a119"
+    "github": "icons8/hub-plugin-hyperspace",
+    "sha": "891c459c7e233546b638a9d13a2fae612cac695c"
    },
-   "version": "1.1.2",
+   "version": "1.1.3",
    "description": "The Hyperspace theme: dark purple, with gradients on the background, panels, header, footer and buttons, its own icons and avatars; also recolors the dark Clean theme",
    "category": "look",
    "tags": [
@@ -201,6 +237,10 @@
     "themes"
    ],
    "author": "libertyswift",
+   "upstream": {
+    "github": "libertyswift/hub-plugin-hyperspace",
+    "sha": "116947bd43fdcde8ef3ec166bc8ebbb63404a119"
+   },
    "icon": "icons/hyperspace.svg",
    "rights": {
     "page": true,
@@ -211,8 +251,8 @@
    "name": "ios-themes",
    "type": "plugin",
    "source": {
-    "github": "ManyLattice/hub-plugin-ios-themes",
-    "sha": "e96c144b584200c4c2ef4e491bbea5d5580b2bd1"
+    "github": "icons8/hub-plugin-ios-themes",
+    "sha": "5396527703634bc466b1e3b1121aad129c4d1eaa"
    },
    "version": "1.0.0",
    "description": "Hub themes for an iOS developer: Liquid Glass, light, glass over a wallpaper in the spirit of iOS 26; Blueprint, a dark Interface Builder blueprint with an orange accent. Icons8 icons and avatars in the iOS style",
@@ -221,6 +261,10 @@
     "themes"
    ],
    "author": "ManyLattice",
+   "upstream": {
+    "github": "ManyLattice/hub-plugin-ios-themes",
+    "sha": "e96c144b584200c4c2ef4e491bbea5d5580b2bd1"
+   },
    "icon": "icons/ios-themes.png",
    "hubs": 4,
    "rights": {
@@ -231,8 +275,8 @@
    "name": "jira-board",
    "type": "plugin",
    "source": {
-    "github": "GreatMedivack/hub-plugin-jira-board",
-    "sha": "ec21c50d2acb0a80e54366681ca025831df47da6"
+    "github": "icons8/hub-plugin-jira-board",
+    "sha": "1b7a2582b1008765bbcd4e49bc0e5e4ab56bb961"
    },
    "version": "1.1.0",
    "description": "Jira tasks in the hub: what the agents are working on and what is done, the status in Jira, who works on it, a jump to the right session. Statuses come through the Atlassian MCP already connected to the hub",
@@ -242,6 +286,10 @@
     "process"
    ],
    "author": "GreatMedivack",
+   "upstream": {
+    "github": "GreatMedivack/hub-plugin-jira-board",
+    "sha": "ec21c50d2acb0a80e54366681ca025831df47da6"
+   },
    "icon": "icons/jira-board.png",
    "hubs": 4,
    "rights": {
@@ -253,8 +301,8 @@
    "name": "mascot",
    "type": "plugin",
    "source": {
-    "github": "kalimullin/hub-plugin-mascot",
-    "sha": "da1133edcbf1d42170ae820906241cc31538d2c9"
+    "github": "icons8/hub-plugin-mascot",
+    "sha": "8aba1748cb2aef60a54fb875dfe454d4de410e64"
    },
    "version": "2.2.0",
    "description": "A purple cloud with eyes in the header of the sidebar shows the state of the fleet: waiting for you, working, asleep",
@@ -263,6 +311,10 @@
     "page"
    ],
    "author": "kalimullin",
+   "upstream": {
+    "github": "kalimullin/hub-plugin-mascot",
+    "sha": "da1133edcbf1d42170ae820906241cc31538d2c9"
+   },
    "icon": "icons/mascot.svg",
    "hubs": 2,
    "rights": {
@@ -273,8 +325,8 @@
    "name": "mascots",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-mascots",
-    "sha": "be3dec61a72a58a2f9fd35548cd6ddc326fa62ae"
+    "github": "icons8/hub-plugin-mascots",
+    "sha": "fc56e980cb0ef09b0b0cf0d7f17e09bbf432fefd"
    },
    "version": "1.3.4",
    "description": "A mascot in the header of the session list, next to the search (in a hub without the ☰ menu it can also replace the avatar), with almost 5000 characters to choose from in Settings → Mascots. The pictures are loaded from petdex.dev, the choice is kept in the browser",
@@ -283,6 +335,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-mascots",
+    "sha": "be3dec61a72a58a2f9fd35548cd6ddc326fa62ae"
+   },
    "icon": "icons/mascots.png",
    "hubs": 2,
    "rights": {
@@ -293,8 +349,8 @@
    "name": "md-panel",
    "type": "plugin",
    "source": {
-    "github": "kalimullin/hub-plugin-md-panel",
-    "sha": "b14753ba98ecfb0128bcb7ef34c64728ad6eae5e"
+    "github": "icons8/hub-plugin-md-panel",
+    "sha": "73725dd33ad7349adb39e1dcdbbd414b87b01d9b"
    },
    "version": "1.0.0",
    "description": "Markdown on a click, in a panel to the right of the session's conversation: the file next to the thread, the thread stays in place; editing, comments and VS Code as in \"Files\"",
@@ -303,6 +359,10 @@
     "page"
    ],
    "author": "kalimullin",
+   "upstream": {
+    "github": "kalimullin/hub-plugin-md-panel",
+    "sha": "b14753ba98ecfb0128bcb7ef34c64728ad6eae5e"
+   },
    "icon": "icons/md-panel.svg",
    "rights": {
     "page": true
@@ -312,8 +372,8 @@
    "name": "notify",
    "type": "plugin",
    "source": {
-    "github": "ManyLattice/hub-plugin-notify",
-    "sha": "2938846826b0cfa4dcffbffd48c4cc9f8dc3b879"
+    "github": "icons8/hub-plugin-notify",
+    "sha": "5107baa38bc7f379bfd3f01a1bc0d22826f433b6"
    },
    "version": "1.1.0",
    "description": "Browser and macOS notifications about what matters to you: a question for you, the hub's answer, a reply to your message, the result of your task, a reminder, a monitor's signal. A click opens the session; an answered question takes its notification away",
@@ -323,6 +383,10 @@
     "process"
    ],
    "author": "ManyLattice",
+   "upstream": {
+    "github": "ManyLattice/hub-plugin-notify",
+    "sha": "2938846826b0cfa4dcffbffd48c4cc9f8dc3b879"
+   },
    "icon": "icons/notify.svg",
    "hubs": 5,
    "rights": {
@@ -334,10 +398,10 @@
    "name": "petdex",
    "type": "plugin",
    "source": {
-    "github": "ManyLattice/hub-plugin-petdex",
-    "sha": "49c2cd13bb602f1992547812bbb52dd5f0cbd152"
+    "github": "icons8/hub-plugin-petdex",
+    "sha": "91646a5e55c7ed15fa05994923222b8e607aab1f"
    },
-   "version": "1.1.2",
+   "version": "1.1.3",
    "description": "A pet from the petdex.dev gallery sits on the input field of the open session and shows what it does: working, it runs; asking you, it waves; failed, it is sad; done with a turn, it jumps. Thousands of pets to pick from: \"Settings\" → \"Pet\"",
    "category": "sessions",
    "tags": [
@@ -345,6 +409,10 @@
     "process"
    ],
    "author": "ManyLattice",
+   "upstream": {
+    "github": "ManyLattice/hub-plugin-petdex",
+    "sha": "49c2cd13bb602f1992547812bbb52dd5f0cbd152"
+   },
    "icon": "icons/petdex.png",
    "hubs": 1,
    "rights": {
@@ -356,8 +424,8 @@
    "name": "pin-directions",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-pin-directions",
-    "sha": "8b281a31e711deacd84eed601f9bd0d23edd7469"
+    "github": "icons8/hub-plugin-pin-directions",
+    "sha": "0ed0533d8df380953f94673a35404bd88897fac0"
    },
    "version": "1.2.0",
    "description": "The pin on a direction in the session list keeps it at the top of the \"Directions\" block",
@@ -366,6 +434,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-pin-directions",
+    "sha": "8b281a31e711deacd84eed601f9bd0d23edd7469"
+   },
    "icon": "icons/pin-directions.png",
    "hubs": 2,
    "rights": {
@@ -376,8 +448,8 @@
    "name": "quiet-unread",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-quiet-unread",
-    "sha": "7ede5cbd8e7f416d13225939569b8f849506b325"
+    "github": "icons8/hub-plugin-quiet-unread",
+    "sha": "e4fb4d5a4ababbea8388b3aad4a9c8094ae2de25"
    },
    "version": "0.3.1",
    "description": "Lights up \"New\" only for results meant for you: a reply to your message or your task, or the continuation of one. The blue dot and the \"New\" section in the \"Now\" tab stay quiet for service messages. The hub always counts; in the settings tick who else lights up on any result.",
@@ -386,6 +458,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-quiet-unread",
+    "sha": "7ede5cbd8e7f416d13225939569b8f849506b325"
+   },
    "icon": "icons/quiet-unread.png",
    "hubs": 3,
    "rights": {
@@ -396,10 +472,10 @@
    "name": "ram",
    "type": "plugin",
    "source": {
-    "github": "ManyLattice/hub-plugin-ram",
-    "sha": "eed07d67d65720fc7173f10f1b1c6a38a61ddb14"
+    "github": "icons8/hub-plugin-ram",
+    "sha": "9c6016d54d77ed4fbaf040b39d2d6a74d16b731f"
    },
-   "version": "1.1.0",
+   "version": "1.1.1",
    "description": "How much memory each session eats: its claude and all its children (MCP servers, background commands, builds), and apart from them the hub's browser and the hub's processes with plugins. A \"Memory\" view and a label next to the session in the list",
    "category": "sessions",
    "tags": [
@@ -407,6 +483,10 @@
     "process"
    ],
    "author": "ManyLattice",
+   "upstream": {
+    "github": "ManyLattice/hub-plugin-ram",
+    "sha": "eed07d67d65720fc7173f10f1b1c6a38a61ddb14"
+   },
    "icon": "icons/ram.png",
    "hubs": 2,
    "rights": {
@@ -418,16 +498,20 @@
    "name": "recent-first",
    "type": "plugin",
    "source": {
-    "github": "GreatMedivack/hub-plugin-recent-first",
-    "sha": "cb55aec043237f006583b3feba2b9ae793fa9fd7"
+    "github": "icons8/hub-plugin-recent-first",
+    "sha": "ecdc420aa89af62ab293c242a1878d4f14990ab3"
    },
-   "version": "1.2.1",
+   "version": "1.2.2",
    "description": "Sessions in the list on the left by their latest activity: whoever just worked or wrote is higher. Within each group (\"Specialists\", \"Executors\"…) executors stay under their agent",
    "category": "sessions",
    "tags": [
     "page"
    ],
    "author": "GreatMedivack",
+   "upstream": {
+    "github": "GreatMedivack/hub-plugin-recent-first",
+    "sha": "cb55aec043237f006583b3feba2b9ae793fa9fd7"
+   },
    "icon": "icons/recent-first.png",
    "hubs": 2,
    "rights": {
@@ -438,8 +522,8 @@
    "name": "reveal-links",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-reveal-links",
-    "sha": "956966116e05a4da35c6e237b39178f966149b18"
+    "github": "icons8/hub-plugin-reveal-links",
+    "sha": "83ec9fb202b7debbe93150a16e286a14ce5f2d7d"
    },
    "version": "1.3.1",
    "description": "A file link in chat opens it in the hub's Files; Cmd-click (Ctrl-click on Windows) shows the file in Finder or Explorer",
@@ -448,6 +532,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-reveal-links",
+    "sha": "956966116e05a4da35c6e237b39178f966149b18"
+   },
    "icon": "icons/reveal-links.png",
    "hubs": 2,
    "rights": {
@@ -458,8 +546,8 @@
    "name": "session-mute",
    "type": "plugin",
    "source": {
-    "github": "Scremliss/hub-plugin-session-mute",
-    "sha": "b84a6432c82daf147ad2e0b2ffa93471ee1f0e9d"
+    "github": "icons8/hub-plugin-session-mute",
+    "sha": "a32aa488793ab9407ba0d56292121930cdae0523"
    },
    "version": "1.0.0",
    "description": "Mute sessions: no blue \"new\" dot and no \"reply?\" guess",
@@ -468,6 +556,10 @@
     "page"
    ],
    "author": "Scremliss",
+   "upstream": {
+    "github": "Scremliss/hub-plugin-session-mute",
+    "sha": "b84a6432c82daf147ad2e0b2ffa93471ee1f0e9d"
+   },
    "icon": "icons/session-mute.svg",
    "hubs": 1,
    "rights": {
@@ -478,8 +570,8 @@
    "name": "sounds",
    "type": "plugin",
    "source": {
-    "github": "kalimullin/hub-plugin-sounds",
-    "sha": "acc3d26ad2c98f06dc2da0031c133b303f3e7d4e"
+    "github": "icons8/hub-plugin-sounds",
+    "sha": "8aa0ec91087d9682c2c862f738010254090f9ee2"
    },
    "version": "1.0.0",
    "description": "A sound for a new message to you, and another, more noticeable one when a session waits for your answer",
@@ -488,6 +580,10 @@
     "page"
    ],
    "author": "kalimullin",
+   "upstream": {
+    "github": "kalimullin/hub-plugin-sounds",
+    "sha": "acc3d26ad2c98f06dc2da0031c133b303f3e7d4e"
+   },
    "icon": "icons/sounds.svg",
    "hubs": 4,
    "rights": {
@@ -498,8 +594,8 @@
    "name": "tasks",
    "type": "plugin",
    "source": {
-    "github": "tolaysha/hub-plugin-tasks",
-    "sha": "4c893ae4a939885eb77da52c150142971de6aab1"
+    "github": "icons8/hub-plugin-tasks",
+    "sha": "4cc40d5bdffc85251f6b23a198d7f3b96d4b527f"
    },
    "version": "1.1.0",
    "description": "Everything about one piece of work in one card: messages from different sessions, progress on the acceptance criteria and the main decisions. A new task with the /new-task command, from the key of an existing Jira task too",
@@ -509,6 +605,10 @@
     "process"
    ],
    "author": "tolaysha",
+   "upstream": {
+    "github": "tolaysha/hub-plugin-tasks",
+    "sha": "4c893ae4a939885eb77da52c150142971de6aab1"
+   },
    "icon": "icons/tasks.svg",
    "hubs": 1,
    "rights": {
@@ -520,8 +620,8 @@
    "name": "teams",
    "type": "plugin",
    "source": {
-    "github": "tolaysha/hub-plugin-teams",
-    "sha": "e31369b8284b84c07aebee9784a2ae99db3c6520"
+    "github": "icons8/hub-plugin-teams",
+    "sha": "a177c5c5be038cb63dae538c520eb4edb826855c"
    },
    "version": "1.3.0",
    "description": "A \"Teams messages\" tab: new Microsoft Teams messages in one list (direct messages, mentions of you, chosen channels), with \"Take on\", \"Draft a reply\" and \"Hide\" buttons",
@@ -531,6 +631,10 @@
     "process"
    ],
    "author": "tolaysha",
+   "upstream": {
+    "github": "tolaysha/hub-plugin-teams",
+    "sha": "e31369b8284b84c07aebee9784a2ae99db3c6520"
+   },
    "icon": "icons/teams.svg",
    "hubs": 3,
    "rights": {
@@ -542,10 +646,10 @@
    "name": "unix-terminal",
    "type": "plugin",
    "source": {
-    "github": "GreatMedivack/hub-plugin-unix-terminal",
-    "sha": "81a226615814b0384adf5b5ed3da3aa930cf9db3"
+    "github": "icons8/hub-plugin-unix-terminal",
+    "sha": "8102d924e6292f676c5fdeb0a3c52bfdbab99056"
    },
-   "version": "1.18.3",
+   "version": "1.18.4",
    "description": "Hub themes in the spirit of the unix terminals of the 70s and 80s: a calm phosphor and a calm amber, the Terminus font on the whole page, ASCII avatars of the agents (Terminus signs for the common session emoji)",
    "category": "look",
    "tags": [
@@ -553,6 +657,10 @@
     "themes"
    ],
    "author": "GreatMedivack",
+   "upstream": {
+    "github": "GreatMedivack/hub-plugin-unix-terminal",
+    "sha": "81a226615814b0384adf5b5ed3da3aa930cf9db3"
+   },
    "icon": "icons/unix-terminal.png",
    "hubs": 6,
    "rights": {
@@ -564,8 +672,8 @@
    "name": "video-feedback",
    "type": "plugin",
    "source": {
-    "github": "Eugenius-S/hub-plugin-video-feedback",
-    "sha": "45fb52f72593bf6d5375f8fa3849f38b630df2ab"
+    "github": "icons8/hub-plugin-video-feedback",
+    "sha": "c9e34d6fc7c0eff6e535bce306845c07d6168ca4"
    },
    "version": "0.9.22",
    "description": "Show and tell instead of writing: press the camera next to the microphone and the screen and your voice start recording 3 seconds later. Draw on the screen with a pen, tag a Motion Gallery animation at a frame. The hub turns it into feedback by points. Costs more tokens than text.",
@@ -574,6 +682,10 @@
     "page"
    ],
    "author": "Eugenius-S",
+   "upstream": {
+    "github": "Eugenius-S/hub-plugin-video-feedback",
+    "sha": "45fb52f72593bf6d5375f8fa3849f38b630df2ab"
+   },
    "icon": "icons/video-feedback.png",
    "hubs": 2,
    "rights": {
@@ -584,16 +696,20 @@
    "name": "whip",
    "type": "plugin",
    "source": {
-    "github": "ManyLattice/hub-plugin-whip",
-    "sha": "cb8b314494768730fc9067476d37313e67aecc70"
+    "github": "icons8/hub-plugin-whip",
+    "sha": "2693334735ebcd3ed964a465a2a4a635befab09b"
    },
-   "version": "1.0.0",
+   "version": "1.0.1",
    "description": "A whip on the model of \"Hammer\": a handle at the cursor, a flexible lash follows the hand, a crack leaves a welt on the screen, sparks and a sound. Esc puts everything back",
    "category": "fun",
    "tags": [
     "page"
    ],
    "author": "ManyLattice",
+   "upstream": {
+    "github": "ManyLattice/hub-plugin-whip",
+    "sha": "cb8b314494768730fc9067476d37313e67aecc70"
+   },
    "icon": "icons/whip.png",
    "hubs": 1,
    "rights": {
@@ -604,8 +720,8 @@
    "name": "wide-feed",
    "type": "plugin",
    "source": {
-    "github": "Scremliss/hub-plugin-wide-feed",
-    "sha": "6fedfa2ca0e9aed581ee910fcd3c7591a8a3b923"
+    "github": "icons8/hub-plugin-wide-feed",
+    "sha": "64234d45a52516743a023e8bd2da32f9b823d6a6"
    },
    "version": "1.0.0",
    "description": "The feed and the input field in a wide column",
@@ -614,6 +730,10 @@
     "page"
    ],
    "author": "Scremliss",
+   "upstream": {
+    "github": "Scremliss/hub-plugin-wide-feed",
+    "sha": "6fedfa2ca0e9aed581ee910fcd3c7591a8a3b923"
+   },
    "icon": "icons/wide-feed.svg",
    "rights": {
     "page": true
@@ -623,16 +743,20 @@
    "name": "write-lamp",
    "type": "plugin",
    "source": {
-    "github": "GreatMedivack/hub-plugin-write-lamp",
-    "sha": "0e01ffbe1db6f3fc011a4cc7bc87197bc81a4c3f"
+    "github": "icons8/hub-plugin-write-lamp",
+    "sha": "7e7f0b8689e44b00ab784f84a8df9468d2219bd4"
    },
-   "version": "1.2.3",
+   "version": "1.2.4",
    "description": "A write lamp: blinks in the input field (in the title bar where there is none) when an agent writes outside: an MR or PR, a push, a deploy and infrastructure, a write to a database, an MCP with writes; a click shows who and what; at rest it stays gray, without blinking",
    "category": "feed",
    "tags": [
     "page"
    ],
    "author": "GreatMedivack",
+   "upstream": {
+    "github": "GreatMedivack/hub-plugin-write-lamp",
+    "sha": "0e01ffbe1db6f3fc011a4cc7bc87197bc81a4c3f"
+   },
    "icon": "icons/write-lamp.png",
    "hubs": 1,
    "rights": {
