@@ -10,7 +10,11 @@
   python3 tools/catalog.py verify [--since base.json]         every pinned entry against the code at its sha
 
 The hub core is needed (same parser, same rights as the hub uses when installing): HUB_CORE=<checkout of the core>.
-add and verify only read GitHub (`gh api`, `git fetch`); sync pushes the merged copy to its repo (never with force).
+add and verify only read GitHub (`gh api`, `git fetch`); sync pushes the copy's next snapshot to its repo (never with
+force).
+
+A copy the catalog keeps holds no history of the author: it is a chain of snapshot commits, each one the tree hubs
+install, its message naming the author's commit it was made from (SNAPSHOT) with the author as a co-author.
 """
 import argparse
 import io
@@ -317,9 +321,34 @@ def verify(args):
     return 1 if errors else 0
 
 
+SNAPSHOT = "{name} {version}: snapshot of {upstream}@{sha12}"
+
+
+def snapshot_message(name, version, upstream, sha, coauthor):
+    """The message of a copy's snapshot commit: what of the author's it holds, and the author as a co-author."""
+    head = SNAPSHOT.format(name=name, version=version or "-", upstream=upstream, sha12=sha[:12])
+    return f"{head}\n\nCo-authored-by: {coauthor}\n" if coauthor else f"{head}\n"
+
+
+def names_upstream(message, up):
+    """The snapshot commit's message names this commit of the author's repo."""
+    return f"snapshot of {up['github']}@{up['sha'][:12]}" in str(message or "").split("\n", 1)[0]
+
+
+def coauthor(login):
+    """`login <id+login@users.noreply.github.com>` of a GitHub account (the id makes GitHub credit it), or without the
+    id when gh cannot tell it."""
+    try:
+        uid = gh(f"users/{login}", "--jq", ".id").strip()
+    except (Skip, OSError):   # no gh at all: the login alone
+        uid = ""
+    return f"{login} <{uid + '+' if uid.isdigit() else ''}{login}@users.noreply.github.com>"
+
+
 def upstream_wrong(src, up, skip=()):
     """A copy's `upstream` -> why it is wrong, or None: {github, sha} of the author's repo, and the copy at its pinned
-    commit holds that commit of the author (the catalog says what of the author's it installs)."""
+    commit is the snapshot of that commit of the author (its message names it), or holds it in its history (a copy
+    kept as the author's history with commits on top): the catalog says what of the author's it installs."""
     if not isinstance(up, dict) or not market.repo_of(str(up.get("github") or "")) or not str(up.get("sha") or ""):
         return "upstream: {github: owner/repo, sha} of the author's repo"
     if up["github"] in skip:
@@ -328,6 +357,14 @@ def upstream_wrong(src, up, skip=()):
         gh(f"repos/{up['github']}/commits/{up['sha']}", "--jq", ".sha")
     except Skip as e:
         return f"upstream {up['sha'][:12]} is not a commit of {up['github']}: {e}"
+    try:   # the nearest snapshot at or under the pinned commit decides (a fix of ours may sit on top of it)
+        messages = json.loads(gh(f"repos/{src['github']}/commits?sha={src['sha']}&per_page=30", "--jq",
+                                 "[.[].commit.message]") or "[]")
+    except (Skip, ValueError) as e:
+        return f"the copy has no commit {src['sha'][:12]}: {e}"
+    snap = next((m for m in messages if "snapshot of " in str(m).split("\n", 1)[0]), None)
+    if snap is not None:
+        return None if names_upstream(snap, up) else f"upstream {up['sha'][:12]} is not the copy's snapshot"
     try:
         status = gh(f"repos/{src['github']}/compare/{up['sha']}...{src['sha']}", "--jq", ".status").strip()
     except Skip as e:
@@ -342,18 +379,21 @@ def git_url(repo):
     return f"https://github.com/{repo}.git"
 
 
-def git(cwd, *args, check=True, code=False):
+def git(cwd, *args, check=True, code=False, env=None):
     """git's output (code - (exit code, output)); a failure with check - Skip."""
     r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                       env={**os.environ, "GIT_TERMINAL_PROMPT": "0"})
+                       env={**os.environ, "GIT_TERMINAL_PROMPT": "0", **(env or {})})
     if check and r.returncode:
         tail = (r.stderr or r.stdout).strip().splitlines()
         raise Skip(f"git {args[0]}: {tail[-1][:200] if tail else 'failed'}")
     return (r.returncode, r.stdout.strip()) if code else r.stdout.strip()
 
 
-def ancestor(cwd, a, b):
-    return subprocess.run(["git", "merge-base", "--is-ancestor", a, b], cwd=cwd, capture_output=True).returncode == 0
+def ancestor(cwd, a, b, plain=False):
+    """a is in b's history; plain - the real history, not the one a local graft (git replace) shows."""
+    env = {**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"} if plain else None
+    return subprocess.run(["git", "merge-base", "--is-ancestor", a, b], cwd=cwd, capture_output=True,
+                          env=env).returncode == 0
 
 
 def at(clone, rev, tmp):
@@ -405,7 +445,10 @@ def stopped(note, st, why):
 
 def sync_one(data, e, work, resume=False, accept=False):
     """One copy: the author's new commits merged into it, the rights the same, the new text English -> the copy pushed
-    and the entry moved (returns a line). A person has to look - Stop (the clone stays in work/<name>)."""
+    and the entry moved (returns a line). A person has to look - Stop (the clone stays in work/<name>).
+    A copy of snapshots (no history of the author): in the clone only, the copy's commit is grafted onto the author's
+    commit it holds, so the merge sees what is new; what is pushed is one snapshot commit of the merged tree on top of
+    the copy's commit - the author's history does not go into the copy."""
     up, src = e.get("upstream"), e.get("source") or {}
     if not isinstance(up, dict) or not up.get("github") or not up.get("sha"):
         raise Skip("not a copy: the entry has no upstream")
@@ -440,6 +483,14 @@ def sync_one(data, e, work, resume=False, accept=False):
             git(folder, "checkout", "--quiet", "-B", branch, base)
             git(folder, "fetch", "--quiet", git_url(up["github"]), "HEAD")
             new = git(folder, "rev-parse", "FETCH_HEAD")
+            if not ancestor(folder, up["sha"], base, plain=True):
+                # a copy of snapshots: the author's commit it holds (fetched by sha when the default branch does not
+                # hold it), and the graft onto it - local, never pushed
+                if git(folder, "cat-file", "-t", up["sha"], check=False) != "commit":
+                    git(folder, "fetch", "--quiet", git_url(up["github"]), up["sha"], check=False)
+                if git(folder, "cat-file", "-t", up["sha"], check=False) != "commit":
+                    raise Stop(f"{up['github']} no longer holds {up['sha'][:12]} (history rewritten): read it by hand")
+                git(folder, "replace", "--graft", base, up["sha"])
             if new == up["sha"] or ancestor(folder, new, base):
                 shutil.rmtree(folder, ignore_errors=True)
                 return f"{name}: up to date with {up['github']} ({new[:12]})"
@@ -474,7 +525,14 @@ def sync_one(data, e, work, resume=False, accept=False):
             raise Stop(f"new text that is not English yet:\n{shown}\n  translate it in {folder} (a translation the "
                        f"plugin keeps on purpose stays), commit, then `tools/catalog.py sync {name} --resume`")
         sha = git(folder, "rev-parse", "HEAD")
-        git(folder, "push", "--quiet", git_url(copy), f"HEAD:refs/heads/{st['branch']}")
+        if not ancestor(folder, base, sha):   # a snapshot on top of base is always a fast-forward: our commits are kept
+            raise Stop(f"{folder}: HEAD does not hold the copy's {base[:12]} (our commits): merge onto it, then --resume")
+        plain = {"GIT_NO_REPLACE_OBJECTS": "1"}   # what goes out is the copy's own history, not the local graft
+        if not ancestor(folder, up["sha"], base, plain=True):   # decided by the copy's real history, not by the note
+            message = snapshot_message(name, now["man"].get("version"), up["github"], st["upstream"],
+                                       coauthor(owner(e, copy)))
+            sha = git(folder, "commit-tree", f"{sha}^{{tree}}", "-p", base, "-m", message, env=plain)
+        git(folder, "push", "--quiet", git_url(copy), f"{sha}:refs/heads/{st['branch']}", env=plain)
         moved = entry(ROOT, copy, sha, now, {**e, "upstream": {"github": up["github"], "sha": st["upstream"]}})
         data["plugins"] = [p for p in data["plugins"] if p["name"] != name] + [moved]
         shutil.rmtree(folder, ignore_errors=True)

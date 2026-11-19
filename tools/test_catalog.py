@@ -246,6 +246,138 @@ class SyncTest(unittest.TestCase):
         self.assertIn("settle that by hand", out)
 
 
+class SnapshotSyncTest(SyncTest):
+    """The same, for a copy of snapshots: one commit holding the author's tree with our translation, no history of the
+    author. sync merges through a graft in its clone and pushes one more snapshot on top."""
+
+    def setUp(self):
+        super().setUp()
+        work = os.path.join(self.dir, "w")
+        tree = git(work, "rev-parse", "HEAD^{tree}")
+        msg = catalog.snapshot_message("maps", "1.0.0", "acme/hub-plugin-maps", self.pin, "acme <acme@example.test>")
+        snap = git(work, "commit-tree", tree, "-m", msg)
+        shutil.rmtree(self.copy)
+        git(self.dir, "init", "-q", "--bare", "-b", "main", self.copy)
+        git(work, "push", "-q", self.copy, f"{snap}:refs/heads/main")
+        self.head = snap
+        self.entry()["source"]["sha"] = snap
+        coauthor = mock.patch.object(catalog, "coauthor", lambda login: f"{login} <1+{login}@users.noreply.github.com>")
+        coauthor.start()
+        self.addCleanup(coauthor.stop)
+
+    def test_a_copy_moved_outside_the_catalog_is_not_synced(self):
+        work = os.path.join(self.dir, "w2")
+        git(self.dir, "clone", "-q", self.copy, work)
+        self.commit(work, {"main.js": "// someone pushed\n"}, "by hand")
+        git(work, "push", "-q", "origin", "main")
+        code, out = self.sync()
+        self.assertEqual(code, 1, out)
+        self.assertIn("settle that by hand", out)
+
+    def history(self):
+        return git(self.copy, "rev-list", "main").split()
+
+    def test_the_update_is_one_snapshot_on_top_and_the_authors_history_stays_out(self):
+        self.commit(self.author, {"extra.js": "// a new file\n"}, "more")
+        new = git(self.author, "rev-parse", "HEAD")
+        code, out = self.sync()
+        self.assertEqual(code, 0, out)
+        top = self.copy_head()
+        self.assertEqual(self.history(), [top, self.head])
+        self.assertEqual(git(self.copy, "rev-parse", f"{top}^"), self.head)
+        message = git(self.copy, "log", "-1", "--format=%B", top)
+        self.assertTrue(message.startswith(f"maps 1.0.0: snapshot of acme/hub-plugin-maps@{new[:12]}"), message)
+        self.assertIn("Co-authored-by: acme <1+acme@users.noreply.github.com>", message)
+        for c in (self.pin, new):
+            self.assertNotEqual(subprocess.run(["git", "cat-file", "-e", c], cwd=self.copy).returncode, 0, c)
+        self.assertEqual(git(self.copy, "show", "main:main.js"), "// maps, in English")
+        self.assertEqual(git(self.copy, "show", "main:extra.js"), "// a new file")
+        self.assertEqual(self.entry()["upstream"]["sha"], new)
+        self.assertTrue(catalog.names_upstream(message, self.entry()["upstream"]))
+        code, out = self.sync()                                          # and the next run sees nothing new
+        self.assertEqual(code, 0, out)
+        self.assertIn("up to date", out)
+
+    def test_a_resume_that_dropped_our_commits_stops_and_pushes_nothing(self):
+        self.commit(self.author, {"extra.js": 'const t = "Γεια";\n'}, "a new string")
+        self.assertEqual(self.sync()[0], catalog.STOPPED)
+        clone = os.path.join(self.clones, "maps")
+        git(clone, "reset", "-q", "--hard", "FETCH_HEAD")                # the author's tree, our translation gone
+        self.commit(clone, {"extra.js": 'const t = "Hello";\n'}, "translated")
+        code, out = self.sync("--resume")
+        self.assertEqual(code, catalog.STOPPED, out)
+        self.assertIn("our commits", out)
+        self.assertEqual(self.copy_head(), self.head)
+
+    def test_a_note_without_the_mode_still_pushes_a_snapshot(self):
+        self.commit(self.author, {"extra.js": 'const t = "Γεια";\n'}, "a new string")
+        self.assertEqual(self.sync()[0], catalog.STOPPED)
+        clone = os.path.join(self.clones, "maps")
+        note = os.path.join(clone, ".git", "hub-sync.json")
+        with open(note) as f:
+            st = json.load(f)
+        st.pop("snapshot", None)
+        with open(note, "w") as f:
+            json.dump(st, f)
+        self.commit(clone, {"extra.js": 'const t = "Hello";\n'}, "translated")
+        code, out = self.sync("--resume")
+        self.assertEqual(code, 0, out)
+        self.assertEqual(len(self.history()), 2)
+        self.assertNotEqual(subprocess.run(["git", "cat-file", "-e", self.pin], cwd=self.copy).returncode, 0)
+
+    def test_the_authors_commit_off_the_default_branch_is_fetched_by_sha(self):
+        git(self.author, "config", "uploadpack.allowReachableSHA1InWant", "true")   # as GitHub does
+        git(self.author, "checkout", "-q", "-b", "side")
+        self.commit(self.author, {"extra.js": "// on a side branch\n"}, "side")
+        self.entry()["upstream"]["sha"] = git(self.author, "rev-parse", "HEAD")   # the copy holds a commit of «side»
+        git(self.author, "checkout", "-q", "main")                               # the default branch is behind it
+        code, out = self.sync()
+        self.assertEqual(code, 0, out)
+        self.assertIn("up to date", out)
+
+    def test_a_resolved_conflict_is_pushed_as_one_snapshot(self):
+        self.commit(self.author, {"main.js": "// χάρτες\n"}, "the author edits the same line")
+        self.assertEqual(self.sync()[0], catalog.STOPPED)
+        clone = os.path.join(self.clones, "maps")
+        with open(os.path.join(clone, "main.js"), "w") as f:
+            f.write("// maps, in English\n")
+        git(clone, "add", "main.js")
+        git(clone, "commit", "-q", "--no-edit")
+        code, out = self.sync("--resume")
+        self.assertEqual(code, 0, out)
+        self.assertEqual(len(self.history()), 2)
+        self.assertEqual(git(self.copy, "show", "main:main.js"), "// maps, in English")
+
+
+class UpstreamWrongTest(unittest.TestCase):
+    UP = {"github": "acme/hub-plugin-maps", "sha": "c" * 40}
+    SRC = {"github": "icons8/hub-plugin-maps", "sha": "d" * 40}
+
+    def check(self, *messages, status="diverged"):
+        def gh(path, *args):
+            if path.startswith("repos/acme/"):
+                return "c" * 40
+            if "/commits?sha=" in path:
+                return json.dumps(list(messages))
+            return status
+        with mock.patch.object(catalog, "gh", gh):
+            return catalog.upstream_wrong(self.SRC, self.UP)
+
+    def test_a_snapshot_naming_the_authors_commit_is_right(self):
+        self.assertIsNone(self.check(catalog.snapshot_message("maps", "1.0.0", self.UP["github"], self.UP["sha"], "")))
+
+    def test_a_snapshot_of_another_commit_is_wrong(self):
+        self.assertIn("is not the copy's snapshot",
+                      self.check("maps 1.0.0: snapshot of acme/hub-plugin-maps@eeeeeeeeeeee"))
+
+    def test_a_fix_of_ours_on_top_of_the_snapshot_is_right(self):
+        snap = catalog.snapshot_message("maps", "1.0.0", self.UP["github"], self.UP["sha"], "")
+        self.assertIsNone(self.check("A fix of the translation", snap))
+
+    def test_a_copy_with_the_authors_history_is_still_right(self):
+        self.assertIsNone(self.check("Merge acme/hub-plugin-maps", status="ahead"))
+
+
 class ContributorsTest(unittest.TestCase):
     def test_authors_come_from_upstream_and_from_plain_entries(self):
         data = {"plugins": [

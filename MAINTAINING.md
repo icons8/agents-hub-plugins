@@ -25,16 +25,18 @@ and nothing runs on a schedule: the catalog changes when someone sends a pull re
 ## Copies of the authors' plugins
 
 Every entry installs a copy under icons8: `source` is `icons8/hub-plugin-<name>`, `author` is the original author's
-login, `upstream` is `{github: <author>/hub-plugin-<name>, sha: <the author's commit the copy holds>}`. A copy is the
-author's history with our commits on top (the text in English by default, the author's line in its README). Nothing
-pulls by itself: a maintainer runs
+login, `upstream` is `{github: <author>/hub-plugin-<name>, sha: <the author's commit the copy holds>}`. A copy holds no history
+of the author: it is a chain of snapshot commits, each one the tree hubs install (the author's code with ours: the text in
+English by default, the author's line in its README), its message `<name> <version>: snapshot of <author>/hub-plugin-<name>@<sha12>`
+with a `Co-authored-by:` line for the author. Nothing pulls by itself: a maintainer runs
 
 ```
 python3 tools/catalog.py sync <name>     # or --all
 ```
 
-For each copy it fetches the author's default branch and merges it into the copy, then stops where a person has to
-look, with the clone kept in the folder it prints:
+For each copy it fetches the author's default branch and merges it into the copy (in its clone the copy's commit is
+grafted onto the author's commit it holds, so the merge sees only what is new; the graft never leaves the clone), then
+stops where a person has to look, with the clone kept in the folder it prints:
 
 - a conflict with our commits: resolve it in the clone, commit, `sync <name> --resume`;
 - new text that is not English: translate it in the clone (a translation the plugin keeps on purpose stays), commit,
@@ -45,13 +47,14 @@ look, with the clone kept in the folder it prints:
 
 A clone `sync` stopped in is never wiped by the next run: `--resume`, or remove the folder to start over.
 
-Otherwise it pushes the merged copy (never with force) and moves the entry (`source.sha`, `upstream.sha`, version,
+Otherwise it pushes one new snapshot of the merged tree on top of the copy (never with force; the author's commits and
+the merge stay in the clone) and moves the entry (`source.sha`, `upstream.sha`, version,
 rights) with CONTRIBUTORS.md. Read the author's diff it prints, run `verify`, send the change as a pull request. `sync`
 needs a git identity that may push to the copies. While the copies are private, `verify` is run locally: the token of
 this repo's CI does not see other private repos.
 
-A new plugin: copy the author's repo into a private `icons8/hub-plugin-<name>` (a mirror of its default branch, not a
-GitHub fork: a fork of a public repo is public), add our commits, then
+A new plugin: make `icons8/hub-plugin-<name>` with one snapshot commit of the author's tree with our changes (not a
+GitHub fork and not a mirror of the author's history), the message as above, then
 `tools/catalog.py add icons8/hub-plugin-<name> --upstream <author>/hub-plugin-<name> --upstream-sha <their commit>` and
 `tools/catalog.py contributors`.
 
