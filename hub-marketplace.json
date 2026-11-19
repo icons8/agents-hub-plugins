@@ -618,32 +618,6 @@
    }
   },
   {
-   "name": "teams",
-   "type": "plugin",
-   "source": {
-    "github": "icons8/hub-plugin-teams",
-    "sha": "48777559b2b057f5fb3281e3c7d1218c89078fd1"
-   },
-   "version": "1.3.0",
-   "description": "A \"Teams messages\" tab: new Microsoft Teams messages in one list (direct messages, mentions of you, chosen channels), with \"Take on\", \"Draft a reply\" and \"Hide\" buttons",
-   "category": "work",
-   "tags": [
-    "page",
-    "process"
-   ],
-   "author": "tolaysha",
-   "upstream": {
-    "github": "tolaysha/hub-plugin-teams",
-    "sha": "e31369b8284b84c07aebee9784a2ae99db3c6520"
-   },
-   "icon": "icons/teams.svg",
-   "hubs": 3,
-   "rights": {
-    "page": true,
-    "process": "sh run.sh"
-   }
-  },
-  {
    "name": "unix-terminal",
    "type": "plugin",
    "source": {

@@ -30,7 +30,7 @@ The plugins are written by their authors; the plugin stays its author's. By plug
 [CONTRIBUTORS.md](CONTRIBUTORS.md).
 
 <!-- authors: tools/catalog.py contributors -->
-[@Eugenius-S](https://github.com/Eugenius-S) (chat-images, choice-images, direction-icons, gpt-image, hide-sidebar, hub-design, mascots, pin-directions, quiet-unread, reveal-links, video-feedback), [@GreatMedivack](https://github.com/GreatMedivack) (jira-board, recent-first, unix-terminal, write-lamp), [@kalimullin](https://github.com/kalimullin) (mascot, md-panel, sounds), [@libertyswift](https://github.com/libertyswift) (hyperspace), [@ManyLattice](https://github.com/ManyLattice) (ios-themes, notify, petdex, ram, whip), [@Scremliss](https://github.com/Scremliss) (dark-optimized, session-mute, wide-feed), [@summers-julia](https://github.com/summers-julia) (granola-meetings), [@tolaysha](https://github.com/tolaysha) (copy-on-select, tasks, teams)
+[@Eugenius-S](https://github.com/Eugenius-S) (chat-images, choice-images, direction-icons, gpt-image, hide-sidebar, hub-design, mascots, pin-directions, quiet-unread, reveal-links, video-feedback), [@GreatMedivack](https://github.com/GreatMedivack) (jira-board, recent-first, unix-terminal, write-lamp), [@kalimullin](https://github.com/kalimullin) (mascot, md-panel, sounds), [@libertyswift](https://github.com/libertyswift) (hyperspace), [@ManyLattice](https://github.com/ManyLattice) (ios-themes, notify, petdex, ram, whip), [@Scremliss](https://github.com/Scremliss) (dark-optimized, session-mute, wide-feed), [@summers-julia](https://github.com/summers-julia) (granola-meetings), [@tolaysha](https://github.com/tolaysha) (copy-on-select, tasks)
 <!-- /authors -->
 
 ## What is here

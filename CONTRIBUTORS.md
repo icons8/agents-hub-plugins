@@ -57,4 +57,3 @@ plugin stays its author's. Built by `tools/catalog.py contributors` from `hub-ma
 
 - **copy-on-select** — original repo [tolaysha/hub-plugin-copy-on-select](https://github.com/tolaysha/hub-plugin-copy-on-select)
 - **tasks** — original repo [tolaysha/hub-plugin-tasks](https://github.com/tolaysha/hub-plugin-tasks)
-- **teams** — original repo [tolaysha/hub-plugin-teams](https://github.com/tolaysha/hub-plugin-teams)
